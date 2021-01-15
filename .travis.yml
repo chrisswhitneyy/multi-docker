@@ -9,11 +9,12 @@ script:
   - docker run -e CI=true cw729/react-test npm test
 
 after_success:
+  # Build images
   - docker build -t cw729/multi-client ./client 
   - docker build -t cw729/multi-nginx ./nginx
   - docker build -t cw729/multi-server ./server
   - docker build -t cw729/multi-worker ./worker
-  # Login into docker
+    # Login into docker
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those images and push them to docker hub
   - docker push cw729/multi-client
